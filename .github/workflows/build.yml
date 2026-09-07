@@ -4,10 +4,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      # Menggunakan versi checkout terbaru yang kompatibel dengan Node 24
       - uses: actions/checkout@v4
       
-      # Skrip ekstrak yang lebih aman: Mengumpulkan semua isi folder ke direktori utama
       - name: Extract Project Zip Safely
         run: |
           unzip *.zip -d temp_extract
@@ -21,15 +19,17 @@ jobs:
           fi
           rm -rf temp_extract target_dir.txt
           
-      # Memperbarui ke setup-java v5 untuk menghilangkan warning otomatis dari GitHub
       - name: set up JDK 17
         uses: actions/setup-java@v5
         with:
           java-version: '17'
           distribution: 'temurin'
-          
-      - name: Grant Execute Permission for Gradle
-        run: chmod +x gradlew
+
+      # Langkah Tambahan: Membuat ulang file gradle-wrapper.jar yang hilang
+      - name: Regenerate Missing Gradle Wrapper
+        run: |
+          gradle wrapper --gradle-version 8.0
+          chmod +x gradlew
         
       - name: Build Debug APK
         run: ./gradlew assembleDebug
