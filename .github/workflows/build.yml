@@ -6,6 +6,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       
+      # Mengekstrak zip proyek Anda ke direktori utama
       - name: Extract Project Zip Safely
         run: |
           unzip *.zip -d temp_extract
@@ -25,10 +26,10 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      # Langkah Tambahan: Membuat ulang file gradle-wrapper.jar yang hilang
+      # PERBAIKAN: Menaikkan versi wrapper ke 8.4 agar cocok dengan plugin Android
       - name: Regenerate Missing Gradle Wrapper
         run: |
-          gradle wrapper --gradle-version 8.0
+          gradle wrapper --gradle-version 8.4
           chmod +x gradlew
         
       - name: Build Debug APK
